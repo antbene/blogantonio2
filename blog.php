@@ -111,7 +111,7 @@ mysqli_close($link);// finito le operazioni chiudo la connessione
                 echo'<article>';
                 echo '<h2>'.$row['title'].'</h2>';
                 /*['title'] corrisponde al valore della colonna title in questa riga della risorsa*/
-                echo '<div class="excerpt">'.excerpt($row['content'],'140').'</div>';
+                echo '<div class="excerpt">'.excerpt($row['content'],'20').'</div>';
                 /*['content'] corrisponde al valore della colonna content in questa riga della risorsa 
                     la funzione excerpt è spiegata in function.php
                     */
