@@ -16,14 +16,15 @@ salvati in un array associativo superglobale (ancora? Si ancora) $_POST
 
 require_once('functions.php');// ancora? Che palle...
 
-//valori di default[inizio]
+// valori di default
+
 $errorMessage='';
 
 /*
 Se viene inviato il parametro logout=yes distruggo il cookie
 lo faccio qui perchè setcookie va fatto prima di qualsiasi output a schermo
 */
-if( isset($_GET['logout'])&&($_GET['logout']=='yes')){
+if(isset($_GET['logout'])&&($_GET['logout']=='yes')){
     setcookie("LOGIN", "", time()-3600);
     // al prossimo ricaricamento di pagina il cookie non esiterà più
     // è necessario forzare il ricaricamento della pagina per non vederlo più
@@ -37,7 +38,7 @@ if( isset($_GET['logout'])&&($_GET['logout']=='yes')){
 <?php
 // ## ESERCIZIO ##, trasformare la procedura di connessione in funzione, è sempre la stessa in tutte le pagine
 // connessione al DB
-$link = mysqli_connect($database['server'], $database['utente'], $database['password'], $database['db']);
+$link = mysqli_connect($database['server'],$database['utente'],$database['password'],$database['db']);
 // gestione degli errori
 if (!$link) {
     echo "Error: Unable to connect to MySQL." . PHP_EOL;
@@ -101,16 +102,14 @@ if(!isset($_COOKIE['LOGIN'])){
     ricevo i dati dal form e li uso per costruire la query che identificherà un utente
     dalla coppia username e password
     */
-    if(isset($_post['uname'])){
-        $userName=$_POST['uname'];
-    }else{
+    if(isset($_POST['uname'])){ 
+        $userName=$_POST['uname']; // i valori andrebbero sanitizzati 
+    }else {
         $userName='';
-    
-    }     
-    // i valori andrebbero sanitizzati
-    if(isset($_post['psw'])){
-       $myPassword=$_POST['psw'];
-    }else{
+    }
+    if(isset($_POST['psw'])){
+        $myPassword=$_POST['psw'];
+   }else {
         $myPassword='';
     }
    
@@ -149,7 +148,9 @@ if(!isset($_COOKIE['LOGIN'])){
        // se non trovo alcuna riga le credenziali sono sbagliate, dovrò stampare un messaggio
         
         // il messaggio verrà creato solo se ho effettivamente inviato il form
-        if((isset($_POST['psw']))&&(isset($_post['uname']))&&($_POST['uname']!='')&&($_POST['psw']!='')){
+        if((isset($_POST['uname']))&&(($_POST['uname']!=''))&&(isset($_POST['psw']))&&(($_POST['psw']!='')))
+                
+                {
             $errorMessage="<p class='error'>Le credenziali sono errate</p>"; 
         }
        
@@ -172,7 +173,7 @@ mysqli_close($link);
         <?php
         if(isset($_COOKIE['LOGIN'])){
                     // stampo il bottone bottone di logout
-                    echo"<p>Benvenuto ".isset($_COOKIE['LOGIN'])."</p>";
+                    echo"<p>Benvenuto ".(isset($_COOKIE['LOGIN']))."</p>";
                     echo'<a href="login.php?logout=yes">Logout</a>';
         }
         ?>
@@ -194,7 +195,7 @@ mysqli_close($link);
             <form enctype="multipart/form-data" action="login.php" method="post">
             <div class="container">
             <div class="imgcontainer">
-            <img src="img/img_avatar2.png" alt="Avatar" class="avatar">
+            <img src="img/mioavatar.jpg" alt="Avatar" class="avatar">
             </div>    
             <label for="uname"><b>Username</b></label>
             <input type="text" placeholder="Enter Username" name="uname" required>
